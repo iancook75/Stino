@@ -418,12 +418,16 @@ def buildDebugMenuGroup(language):
 	upload_menu = MenuItem(language.translate('Upload'))
 	upload_menu.setCommand('upload_sketch')
 
+	upload_and_serial_menu = MenuItem(language.translate('Upload and Serial Monitor'))
+	upload_and_serial_menu.setCommand('upload_and_serial_sketch')
+
 	programmer_upload_menu = MenuItem(language.translate('Upload by Using Programmer'))
 	programmer_upload_menu.setCommand('upload_using_programmer')
 
 	debug_menu_group.addMenuItem(extra_flag_menu)
 	debug_menu_group.addMenuItem(compile_menu)
 	debug_menu_group.addMenuItem(upload_menu)
+	debug_menu_group.addMenuItem(upload_and_serial_menu)
 	debug_menu_group.addMenuItem(programmer_upload_menu)
 	return debug_menu_group
 
