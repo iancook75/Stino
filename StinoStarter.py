@@ -109,8 +109,7 @@ class CompileSketchCommand(sublime_plugin.WindowCommand):
 
 class UploadSketchCommand(sublime_plugin.WindowCommand):
 	def run(self):
-		run_auto_mon = app.constant.sketch_settings.get('auto_serial_mon', True)
-		if run_auto_mon:
+		if app.constant.sketch_settings.get('auto_serial_mon', True):
 			#Close Serial Monitor
 			serial_port_id = app.constant.sketch_settings.get('serial_port', 0)
 			serial_port_list = app.serial.getSerialPortList()
@@ -128,7 +127,7 @@ class UploadSketchCommand(sublime_plugin.WindowCommand):
 		uploader = app.uploader.Uploader(args, compiler)
 		uploader.run()
 
-		if run_auto_mon:
+		if app.constant.sketch_settings.get('auto_serial_mon', True):
 			#Open Serial Monitor
 			if serial_port in app.constant.serial_in_use_list:
 				cur_serial_monitor = app.constant.serial_monitor_dict[serial_port]
