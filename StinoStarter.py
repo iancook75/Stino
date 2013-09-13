@@ -109,6 +109,15 @@ class CompileSketchCommand(sublime_plugin.WindowCommand):
 
 class UploadSketchCommand(sublime_plugin.WindowCommand):
 	def run(self):
+		run_auto_mon = app.constant.sketch_settings.get('auto_serial_mon', True)
+		if run_auto_mon:
+			#Close Serial Monitor
+			serial_port_id = app.constant.sketch_settings.get('serial_port', 0)
+			serial_port_list = app.serial.getSerialPortList()
+			serial_port = serial_port_list[serial_port_id]
+			cur_serial_monitor = app.constant.serial_monitor_dict[serial_port]
+			cur_serial_monitor.stop()
+
 		self.window.active_view().run_command('save')
 		cur_folder = app.active_file.getFolder()
 		cur_project = app.sketch.Project(cur_folder)
@@ -119,10 +128,24 @@ class UploadSketchCommand(sublime_plugin.WindowCommand):
 		uploader = app.uploader.Uploader(args, compiler)
 		uploader.run()
 
-	def is_enabled(self):
-		state = False
-		if app.active_file.isSrcFile():
-			state = True
+		if run_auto_mon:
+			#Open Serial Monitor
+			if serial_port in app.constant.serial_in_use_list:
+				cur_serial_monitor = app.constant.serial_monitor_dict[serial_port]
+			else:
+				cur_serial_monitor = app.serial_monitor.SerialMonitor(serial_port)
+				app.constant.serial_in_use_list.append(serial_port)
+				app.constant.serial_monitor_dict[serial_port] = cur_serial_monitor
+			cur_serial_monitor.start()
+			self.window.run_command('send_serial_text')
+
+class SetAutoSerial(sublime_plugin.WindowCommand):
+	def run(self):
+		auto_serial = not app.constant.sketch_settings.get('auto_serial_mon', True)
+		app.constant.sketch_settings.set('auto_serial_mon', auto_serial)
+
+	def is_checked(self):
+		state = app.constant.sketch_settings.get('auto_serial_mon', True)
 		return state
 
 class UploadAndSerialSketchCommand(sublime_plugin.WindowCommand):

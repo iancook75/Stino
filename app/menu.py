@@ -481,6 +481,10 @@ def buildSettingMenuGroup(language):
 	full_compilation_menu.setCommand('set_full_compilation')
 	full_compilation_menu.setCheckbox()
 
+	auto_serial_menu = MenuItem(language.translate('Serial Monitor after Upload'))
+	auto_serial_menu.setCommand('set_auto_serial')
+	auto_serial_menu.setCheckbox()
+
 	show_verbose_output_menu = MenuItem(language.translate('Show Verbose Output'))
 	show_compilation_menu = MenuItem(language.translate('Compilation'))
 	show_compilation_menu.setCommand('show_compilation_output')
@@ -498,6 +502,7 @@ def buildSettingMenuGroup(language):
 	setting_menu_group.addMenuItem(setting_menu)
 	setting_menu_group.addMenuItem(global_setting_menu)
 	setting_menu_group.addMenuItem(full_compilation_menu)
+	setting_menu_group.addMenuItem(auto_serial_menu)
 	setting_menu_group.addMenuItem(show_verbose_output_menu)
 	setting_menu_group.addMenuItem(verify_code_menu)
 	return setting_menu_group
