@@ -139,6 +139,12 @@ class UploadSketchCommand(sublime_plugin.WindowCommand):
 			cur_serial_monitor.start()
 			self.window.run_command('send_serial_text')
 
+	def is_enabled(self):
+		state = False
+		if app.active_file.isSrcFile():
+			state = True
+		return state
+
 class SetAutoSerial(sublime_plugin.WindowCommand):
 	def run(self):
 		auto_serial = not app.constant.sketch_settings.get('auto_serial_mon', True)
